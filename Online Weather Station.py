@@ -13,15 +13,26 @@ root = Tk()
 root.title('World Weather Forecast')
 root.configure(background='lightblue')
 root.iconbitmap('codemy.ico') #E:/
+#image = PhotoImage(file="background.gif")
+#background=Label(root, image=image)
+#background.place(x=0,y=0,relwidth=1, relheight=1)
 
 # centre the window
-w = 600#root.winfo_reqwidth()
-h = 400#root.winfo_reqheight()
+w = 480#root.winfo_reqwidth()
+h = 320#root.winfo_reqheight()
 ws = root.winfo_screenwidth()
 hs = root.winfo_screenheight()
 x = int((ws/2) - (w/2))
 y = int((hs/2) - (h/2))
+pad_default = 2
+font_size = 20
 root.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+timenow = StringVar()
+timenow.set(time.strftime("%H:%M:%S"))
+
+datenow = StringVar()
+datenow.set(time.strftime("%m/%d/%Y"))
 
 location = StringVar()
 location_date = StringVar()
@@ -30,7 +41,10 @@ location_hum = StringVar()
 location_press = StringVar()
 city = 0
 #cityname = ""
-
+time_label = Label(root, textvariable=timenow, background='lightblue', borderwidth=5, font=("Arial Bold", 15))
+time_label.grid(row = 5, column = 0, columnspan=1, padx=5, pady = 5)
+date_label = Label(root, textvariable=datenow, background='lightblue', borderwidth=5, font=("Arial Bold", 15))
+date_label.grid(row = 6, column = 0, columnspan=1, padx=5, pady = 5)
 #apikey="5d9cb52a19b8b5f9e31edef7b882e8b6" # get a key from https://developer.forecast.io/register
 # Latitude & longitude - current values are central Basingstoke.
 
@@ -91,28 +105,35 @@ def get_weather():
 	#print(weather['currently'])
 	a = ' \u2103' # degree celsius sign
 	#time = datetime.datetime.utcfromtimestamp(epochtime).replace(tzinfo=datetime.timezone.utc)
-	timenow = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime(epochtime)) #Replace time.localtime with time.gmtime for GMT time "%a, %d %b %Y %H:%M:%S +0000".	
+	#timenow = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime(epochtime)) #Replace time.localtime with time.gmtime for GMT time "%a, %d %b %Y %H:%M:%S +0000".	
 	location.set(cityname)
 	#location_date.set(timenow)
 	location_temp.set(str(temp)+ a)
 	location_hum.set(str(int(hum))+ " %")
 	location_press.set(str(press)+ " mbar")
+	root.after(15000, get_weather)
 
-	root.after(5000, get_weather)
-
-e = Entry(root, width=95, background='lightblue', borderwidth=0)
-e.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
-place_label = Label(root, textvariable=location, background='lightblue', fg="red", borderwidth=5, font=("Arial Bold", 30))
-place_label.grid(row = 1, column = 0, columnspan=3, padx=5, pady = 5)
+e = Entry(root, width=80, background='lightblue', borderwidth=0)
+e.grid(row=0, column=0, columnspan=3, padx=1, pady=1)
+place_label = Label(root, textvariable=location, background='lightblue', fg="red", borderwidth=5, font=("Arial Bold", 25))
+place_label.grid(row = 1, column = 0, columnspan=3, rowspan=1, padx=5, pady = 5)
 #date_label = Label(root, textvariable=location_date, background='lightblue', borderwidth=5, font=("Arial Bold", 20))
-#date_label.grid(row = 2, column = 0, columnspan=3, padx=5, pady = 5)
-temp_label = Label(root, textvariable=location_temp, background='lightblue', borderwidth=5, font=("Arial Bold", 20))
-temp_label.grid(row = 2, column = 0, columnspan=3, padx=5, pady = 5)
-hum_label = Label(root, textvariable=location_hum, background='lightblue', borderwidth=5, font=("Arial Bold", 20))
-hum_label.grid(row = 3, column = 0, columnspan=3, padx=5, pady = 5)
-press_label = Label(root, textvariable=location_press, background='lightblue', borderwidth=5, font=("Arial Bold", 20))
-press_label.grid(row = 4, column = 0, columnspan=3, padx=5, pady = 5)
+#date_label.grid(row = 5, column = 0, columnspan=3, padx=5, pady = 5)
+temp_label = Label(root, textvariable=location_temp, background='lightblue', borderwidth=5, font=("Arial Bold", 45))
+temp_label.grid(row = 2, column = 1, columnspan=1, rowspan=2, padx=5, pady = 5)
+hum_label = Label(root, textvariable=location_hum, background='lightblue', borderwidth=5, font=("Arial Bold", 15))
+hum_label.grid(row = 3, column = 0, columnspan=1, padx=5, pady = 5)
+press_label = Label(root, textvariable=location_press, background='lightblue', borderwidth=5, font=("Arial Bold", 15))
+press_label.grid(row = 4, column = 0, columnspan=1, padx=5, pady = 5)
 
-root.after(5000, get_weather)
+def show_time():
+		timenow.set(time.strftime("%H:%M:%S"))
+		root.after(1000, show_time)
+
+def exit():
+	root.quit()
+
+root.after(1000, get_weather)
+root.after(1000, show_time)
 
 root.mainloop()
