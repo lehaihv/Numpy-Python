@@ -27,6 +27,7 @@ y = int((hs/2) - (h/2))
 pad_default = 2
 font_size = 20
 root.geometry('%dx%d+%d+%d' % (w, h, x, y))
+#root.wm_attributes('-transparentcolor', root['bg'])
 
 timenow = StringVar()
 timenow.set(time.strftime("%H:%M:%S"))
@@ -41,7 +42,7 @@ location_hum = StringVar()
 location_press = StringVar()
 city = 0
 #cityname = ""
-time0_label = Label(root, text="Time", background='lightblue', borderwidth=5, font=("Arial Bold", 15))
+time0_label = Label(root, text="Time", background='lightblue', fg="red", borderwidth=5, font=("Arial Bold", 15))
 time0_label.grid(row = 5, column = 0, columnspan=2, padx=5, pady = 5)
 time_label = Label(root, textvariable=timenow, background='lightblue', borderwidth=5, font=("Arial Bold", 25))
 time_label.grid(row = 6, column = 0, columnspan=2, padx=5, pady = 5)
@@ -141,7 +142,7 @@ def show_time():
 def exit():
 	root.quit()
 
-root.after(20000, get_weather)
-root.after(1000, show_time)
+#root.after(20000, get_weather)
+#root.after(1000, show_time)
 
 root.mainloop()
