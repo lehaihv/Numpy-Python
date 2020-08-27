@@ -115,7 +115,7 @@ def get_weather():
 	temp = weather['currently']['temperature']
 	hum = weather['currently']['humidity']*100
 	press = weather['currently']['pressure']
-	epochtime = weather['currently']['time']
+	#epochtime = weather['currently']['time']
 	#print(weather['currently'])
 	a = ' \u2103' # degree celsius sign
 	canvas.itemconfig(label_place, text=cityname)
@@ -129,11 +129,12 @@ def get_weather():
 def show_time():
 		now = datetime.now()
 		current_time = now.strftime("%H:%M:%S")
+		current_date = now.strftime("%m/%d/%Y")
 		#if current_city == 4:
 		#	current_time = current_time + 3
 		canvas.itemconfig(label_time, text=current_time)
+		canvas.itemconfig(label_date, text=current_date)
 		root.after(1000, show_time)
-
 
 def exit():
 	root.quit()
@@ -173,19 +174,19 @@ label_time = canvas.create_text((100,290), text=current_time, font=("Arial Bold"
 label_date = canvas.create_text((350,290), text=current_date, font=("Arial Bold", 30), fill="#2489B8")
 
 #button_next = canvas.cr
-button_exit = Button(canvas, text = "X", fg='white', bg='#c2a58a', command = root.quit, anchor = W)
+button_exit = Button(canvas, text = "X", fg='white', bg='#c2a58a', command = root.quit, anchor = CENTER)
 button_exit.configure(width = 1, activebackground = "#c2a58a", relief = FLAT)
 button_exit_window = canvas.create_window(463, 294, anchor=NW, window=button_exit)
 
-button_next = Button(canvas, text = ">>", fg='white', bg='#137e8b', command = next_city, anchor = W)
+button_next = Button(canvas, text = ">>", fg='white', bg='#137e8b', command = next_city, anchor = CENTER)
 button_next.configure(width = 2, activebackground = "#137e8b", relief = FLAT)
 button_next_window = canvas.create_window(456, 2, anchor=NW, window=button_next)
 
-button_back = Button(canvas, text = "<<", fg='white', bg='#137e8b', command = previous_city, anchor = W)
+button_back = Button(canvas, text = "<<", fg='white', bg='#137e8b', command = previous_city, anchor = CENTER)
 button_back.configure(width = 2, activebackground = "#137e8b", relief = FLAT)
 button_back_window = canvas.create_window(2, 2, anchor=NW, window=button_back)
 
-button_home = Button(canvas, text = "H", fg='white', bg='#c2a58a', command = go_home, anchor = W)
+button_home = Button(canvas, text = "H", fg='white', bg='#c2a58a', command = go_home, anchor = CENTER)
 button_home.configure(width = 1, activebackground = "#c2a58a", relief = FLAT)
 button_home_window = canvas.create_window(2, 294, anchor=NW, window=button_home)
 
