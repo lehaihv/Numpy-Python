@@ -168,16 +168,16 @@ label_time = canvas.create_text((100,290), text=current_time, font=("Arial Bold"
 label_date = canvas.create_text((350,290), text=current_date, font=("Arial Bold", 30), fill="#2489B8")
 
 #button_next = canvas.cr
-button_exit = Button(canvas, text = "X", bg='lightblue', command = root.quit, anchor = W)
-button_exit.configure(width = 1, activebackground = "#33B5E5", relief = FLAT)
+button_exit = Button(canvas, text = "X", fg='white', bg='#c2a58a', command = root.quit, anchor = W)
+button_exit.configure(width = 1, activebackground = "#c2a58a", relief = FLAT)
 button_exit_window = canvas.create_window(463, 294, anchor=NW, window=button_exit)
 
-button_next = Button(canvas, text = ">>", bg='lightblue', command = next_city, anchor = W)
-button_next.configure(width = 2, activebackground = "#33B5E5", relief = FLAT)
+button_next = Button(canvas, text = ">>", fg='white', bg='#137e8b', command = next_city, anchor = W)
+button_next.configure(width = 2, activebackground = "#137e8b", relief = FLAT)
 button_next_window = canvas.create_window(456, 2, anchor=NW, window=button_next)
 
-button_back = Button(canvas, text = "<<", bg='lightblue', command = previous_city, anchor = W)
-button_back.configure(width = 2, activebackground = "#33B5E5", relief = FLAT)
+button_back = Button(canvas, text = "<<", fg='white', bg='#137e8b', command = previous_city, anchor = W)
+button_back.configure(width = 2, activebackground = "#137e8b", relief = FLAT)
 button_back_window = canvas.create_window(2, 2, anchor=NW, window=button_back)
 
 root.after(200, get_weather)
