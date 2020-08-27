@@ -156,6 +156,11 @@ def previous_city():
 		current_city = total_city
 	get_weather()
 
+def go_home():
+	global current_city
+	current_city = 0
+	get_weather()
+
 label_place = canvas.create_text((240,40), text=cityname, font=("Arial Bold", 35), fill="#894949")
 label_temp = canvas.create_text((240,180), text=temp, font=("Arial Bold", 65), fill="#1b92ed")#652828")
 label_hum = canvas.create_text((100,100), text=hum, font=("Arial Bold", 30), fill="#0D3243")
@@ -179,6 +184,10 @@ button_next_window = canvas.create_window(456, 2, anchor=NW, window=button_next)
 button_back = Button(canvas, text = "<<", fg='white', bg='#137e8b', command = previous_city, anchor = W)
 button_back.configure(width = 2, activebackground = "#137e8b", relief = FLAT)
 button_back_window = canvas.create_window(2, 2, anchor=NW, window=button_back)
+
+button_home = Button(canvas, text = "H", fg='white', bg='#c2a58a', command = go_home, anchor = W)
+button_home.configure(width = 1, activebackground = "#c2a58a", relief = FLAT)
+button_home_window = canvas.create_window(2, 294, anchor=NW, window=button_home)
 
 root.after(200, get_weather)
 root.after(100, show_time)
