@@ -14,7 +14,7 @@ from tkinter import filedialog
 root = tk.Tk()
 root.title('World Weather Forecast')
 root.configure(background='lightblue')
-root.iconbitmap('codemy.ico') #E:/
+#root.iconbitmap('codemy.ico') #E:/
 #image = PhotoImage(file="background.gif")
 #background=Label(root, image=image)
 #background.place(x=0,y=0,relwidth=1, relheight=1)
@@ -30,10 +30,11 @@ y = int((hs/2) - (h/2))
 pad_default = 2
 font_size = 20
 root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-# this removes the maximize button
-root.resizable(0,0)
+
+#root.resizable(0,0) # this removes the maximize button
 #root.attributes('-toolwindow', True)
 #root.wm_attributes('-transparentcolor', root['bg'])
+root.attributes("-fullscreen", True) # fullscreen window
 
 canvas = tk.Canvas(root, height=320, width=480)
 canvas.pack()
@@ -46,6 +47,8 @@ current_date = now.strftime("%m/%d/%Y")
 
 
 city = 0
+current_city = 0
+total_city = 5
 cityname = "Hanoi"
 timenow = ""
 temp = 0
@@ -65,31 +68,36 @@ def get_weather():
 	global hum, press, epochtime, time11
 	apikey = "5d9cb52a19b8b5f9e31edef7b882e8b6" # get a key from https://developer.forecast.io/register
 	# Latitude & longitude - current values are central Basingstoke.
+	city = current_city
 	if city == 0: 
 		lati = "21.045021"#"52.194504"
 		longi = "105.800690"#"0.134708"
 		cityname = "Hanoi"
-		city = 1
+		#city = 1
 	elif city == 1:
 		lati = "51.508089"
 		longi = "-0.076208"
 		cityname = "London"
-		city = 2
+		#city = 2
 	elif city == 2:
 		lati = "38.894893"
 		longi = "-77.036552"
 		cityname = "Washington DC"
-		city = 3
+		#city = 3
 	elif city == 3:
 		lati = "55.750446"
 		longi = "37.617494"
 		cityname = "Moscow"
-		city = 4    
-	else:
+		#city = 4    
+	elif city == 4:
 		lati = "-37.721319"
 		longi = "145.048809"
 		cityname = "La Trobe Uni"
-		city = 0    
+		#city = 0    
+	else:
+		lati = "-36.852095"
+		longi = "174.7631803"
+		cityname = "Auckland"
 	#if city==1:    
 		#lati = "52.194504"
 		#longi = "0.134708"
@@ -97,7 +105,6 @@ def get_weather():
 	#city = city + 1
 	#lati="21.045021"#"52.194504"
 	#longi="105.800690"#"0.134708"
-	city = 0
 	# Add units=si to get it in sensible ISO units not stupid Fahreneheit.
 	url="https://api.forecast.io/forecast/"+apikey+"/"+lati+","+longi+"?units=si"
 
@@ -116,12 +123,14 @@ def get_weather():
 	canvas.itemconfig(label_hum, text=str(int(hum))+ " %")
 	canvas.itemconfig(label_press, text=str(press)+ " mbar")
 
-	root.after(3600000, get_weather)
+	#root.after(5000, get_weather) #3600000
 
 
 def show_time():
 		now = datetime.now()
 		current_time = now.strftime("%H:%M:%S")
+		#if current_city == 4:
+		#	current_time = current_time + 3
 		canvas.itemconfig(label_time, text=current_time)
 		root.after(1000, show_time)
 
@@ -129,8 +138,25 @@ def show_time():
 def exit():
 	root.quit()
 
+def next_city():
+	global current_city
+	global total_city
+	if current_city < total_city:
+		current_city = current_city + 1
+	else: 
+		current_city = 0
+	get_weather()
 
-label_place = canvas.create_text((240,40), text=cityname, font=("Arial Bold", 45), fill="#894949")
+def previous_city():
+	global current_city
+	global total_city
+	if current_city > 0:
+		current_city = current_city - 1
+	else:
+		current_city = total_city
+	get_weather()
+
+label_place = canvas.create_text((240,40), text=cityname, font=("Arial Bold", 35), fill="#894949")
 label_temp = canvas.create_text((240,180), text=temp, font=("Arial Bold", 65), fill="#1b92ed")#652828")
 label_hum = canvas.create_text((100,100), text=hum, font=("Arial Bold", 30), fill="#0D3243")
 label_press = canvas.create_text((350,100), text=press, font=("Arial Bold", 30), fill="#0D3243")
@@ -141,7 +167,21 @@ label_time = canvas.create_text((100,290), text=current_time, font=("Arial Bold"
 #label0_date = canvas.create_text((350,260), text="Date", font=("Arial Bold", 15), fill="#652828")
 label_date = canvas.create_text((350,290), text=current_date, font=("Arial Bold", 30), fill="#2489B8")
 
-root.after(2000, get_weather)
-root.after(1000, show_time)
+#button_next = canvas.cr
+button_exit = Button(canvas, text = "X", bg='lightblue', command = root.quit, anchor = W)
+button_exit.configure(width = 1, activebackground = "#33B5E5", relief = FLAT)
+button_exit_window = canvas.create_window(463, 294, anchor=NW, window=button_exit)
+
+button_next = Button(canvas, text = ">>", bg='lightblue', command = next_city, anchor = W)
+button_next.configure(width = 2, activebackground = "#33B5E5", relief = FLAT)
+button_next_window = canvas.create_window(456, 2, anchor=NW, window=button_next)
+
+button_back = Button(canvas, text = "<<", bg='lightblue', command = previous_city, anchor = W)
+button_back.configure(width = 2, activebackground = "#33B5E5", relief = FLAT)
+button_back_window = canvas.create_window(2, 2, anchor=NW, window=button_back)
+
+root.after(200, get_weather)
+root.after(100, show_time)
+
 
 root.mainloop()
