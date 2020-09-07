@@ -34,7 +34,7 @@ root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 #root.resizable(0,0) # this removes the maximize button
 #root.attributes('-toolwindow', True)
 #root.wm_attributes('-transparentcolor', root['bg'])
-root.attributes("-fullscreen", True) # fullscreen window
+#root.attributes("-fullscreen", True) # fullscreen window
 
 canvas = tk.Canvas(root, height=320, width=480)
 canvas.pack()
@@ -174,7 +174,7 @@ label_time = canvas.create_text((100,290), text=current_time, font=("Arial Bold"
 label_date = canvas.create_text((350,290), text=current_date, font=("Arial Bold", 30), fill="#2489B8")
 
 #button_next = canvas.cr
-button_exit = Button(canvas, text = "X", fg='white', bg='#c2a58a', command = root.quit, anchor = CENTER)
+button_exit = Button(canvas, text = "X", fg='white', bg='#c2a58a', command = exit, anchor = CENTER)
 button_exit.configure(width = 1, activebackground = "#c2a58a", relief = FLAT)
 button_exit_window = canvas.create_window(463, 294, anchor=NW, window=button_exit)
 
